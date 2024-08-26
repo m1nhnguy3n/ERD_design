@@ -1,13 +1,14 @@
-CREATE TABLE "ShippingAddress"(
-    "shipping_address_id" BIGINT NOT NULL,
+CREATE TABLE "shipping_address"(
+    "id" BIGINT NOT NULL,
     "user_id" BIGINT NOT NULL,
+    "address" TEXT NOT NULL,
     "created_at" DATE NOT NULL,
     "updated_at" DATE NULL
 );
 ALTER TABLE
-    "ShippingAddress" ADD PRIMARY KEY("shipping_address_id");
-CREATE TABLE "Publishers"(
-    "publisher_id" BIGINT NOT NULL,
+    "shipping_address" ADD PRIMARY KEY("id");
+CREATE TABLE "publishers"(
+    "id" BIGINT NOT NULL,
     "publisher_name" VARCHAR(255) NOT NULL,
     "address" TEXT NOT NULL,
     "contact_info" TEXT NOT NULL,
@@ -15,15 +16,13 @@ CREATE TABLE "Publishers"(
     "updated_at" DATE NULL
 );
 ALTER TABLE
-    "Publishers" ADD PRIMARY KEY("publisher_id");
-CREATE TABLE "Author_Book"(
+    "publishers" ADD PRIMARY KEY("id");
+CREATE TABLE "author_books"(
     "author_id" BIGINT NOT NULL,
     "book_id" BIGINT NOT NULL
 );
-ALTER TABLE
-    "Author_Book" ADD PRIMARY KEY("author_id");
-CREATE TABLE "Books"(
-    "book_id" BIGINT NOT NULL,
+CREATE TABLE "books"(
+    "id" BIGINT NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "description" TEXT NOT NULL,
     "isbn" VARCHAR(255) NOT NULL,
@@ -37,9 +36,9 @@ CREATE TABLE "Books"(
     "updated_at" DATE NULL
 );
 ALTER TABLE
-    "Books" ADD PRIMARY KEY("book_id");
-CREATE TABLE "Review"(
-    "review_id" BIGINT NOT NULL,
+    "books" ADD PRIMARY KEY("id");
+CREATE TABLE "reviews"(
+    "id" BIGINT NOT NULL,
     "user_id" BIGINT NOT NULL,
     "book_id" BIGINT NOT NULL,
     "rating" INTEGER NOT NULL,
@@ -48,17 +47,17 @@ CREATE TABLE "Review"(
     "update_at" DATE NOT NULL
 );
 ALTER TABLE
-    "Review" ADD PRIMARY KEY("review_id");
-CREATE TABLE "Roles"(
-    "role_id" BIGINT NOT NULL,
+    "reviews" ADD PRIMARY KEY("id");
+CREATE TABLE "roles"(
+    "id" BIGINT NOT NULL,
     "role_name" VARCHAR(255) NOT NULL,
     "created_at" DATE NOT NULL,
-    "updated-at" DATE NULL
+    "updated_at" DATE NULL
 );
 ALTER TABLE
-    "Roles" ADD PRIMARY KEY("role_id");
-CREATE TABLE "Authors"(
-    "author_id" BIGINT NOT NULL,
+    "roles" ADD PRIMARY KEY("id");
+CREATE TABLE "authors"(
+    "id" BIGINT NOT NULL,
     "author_name" VARCHAR(255) NOT NULL,
     "biography" TEXT NOT NULL,
     "image_url" TEXT NOT NULL,
@@ -66,9 +65,9 @@ CREATE TABLE "Authors"(
     "updated_at" DATE NULL
 );
 ALTER TABLE
-    "Authors" ADD PRIMARY KEY("author_id");
-CREATE TABLE "OrderItem"(
-    "order_item_id" BIGINT NOT NULL,
+    "authors" ADD PRIMARY KEY("id");
+CREATE TABLE "order_items"(
+    "id" BIGINT NOT NULL,
     "order_id" BIGINT NOT NULL,
     "book_id" BIGINT NOT NULL,
     "price" DECIMAL(8, 2) NOT NULL,
@@ -76,15 +75,15 @@ CREATE TABLE "OrderItem"(
     "updated_at" DATE NULL
 );
 ALTER TABLE
-    "OrderItem" ADD PRIMARY KEY("order_item_id");
-CREATE TABLE "User_Role"(
+    "order_items" ADD PRIMARY KEY("id");
+CREATE TABLE "user_roles"(
     "user_id" BIGINT NOT NULL,
     "role_id" BIGINT NOT NULL
 );
 ALTER TABLE
-    "User_Role" ADD PRIMARY KEY("user_id");
-CREATE TABLE "Order"(
-    "order_id" BIGINT NOT NULL,
+    "user_roles" ADD PRIMARY KEY("user_id");
+CREATE TABLE "orders"(
+    "id" BIGINT NOT NULL,
     "user_id" BIGINT NOT NULL,
     "order_date" DATE NOT NULL,
     "shipping_address_id" BIGINT NOT NULL,
@@ -94,51 +93,50 @@ CREATE TABLE "Order"(
     "updated_at" BIGINT NULL
 );
 ALTER TABLE
-    "Order" ADD PRIMARY KEY("order_id");
-CREATE TABLE "Categories"(
-    "category_id" BIGINT NOT NULL,
+    "orders" ADD PRIMARY KEY("id");
+CREATE TABLE "categories"(
+    "id" BIGINT NOT NULL,
     "category_name" VARCHAR(255) NOT NULL,
     "created_at" DATE NOT NULL,
     "updated_at" DATE NULL
 );
 ALTER TABLE
-    "Categories" ADD PRIMARY KEY("category_id");
-CREATE TABLE "Users"(
-    "user_id" BIGINT NOT NULL,
+    "categories" ADD PRIMARY KEY("id");
+CREATE TABLE "users"(
+    "id" BIGINT NOT NULL,
     "email" VARCHAR(255) NOT NULL,
     "password" VARCHAR(255) NOT NULL,
     "first_name" VARCHAR(255) NOT NULL,
     "last_name" VARCHAR(255) NOT NULL,
-    "address" TEXT NOT NULL,
     "phone_number" VARCHAR(255) NOT NULL,
     "created_at" DATE NOT NULL,
     "updated_at" DATE NULL
 );
 ALTER TABLE
-    "Users" ADD PRIMARY KEY("user_id");
+    "users" ADD PRIMARY KEY("id");
 ALTER TABLE
-    "ShippingAddress" ADD CONSTRAINT "shippingaddress_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "Users"("user_id");
+    "shipping_address" ADD CONSTRAINT "shipping_address_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "users"("id");
 ALTER TABLE
-    "Books" ADD CONSTRAINT "books_category_id_foreign" FOREIGN KEY("category_id") REFERENCES "Categories"("category_id");
+    "books" ADD CONSTRAINT "books_category_id_foreign" FOREIGN KEY("category_id") REFERENCES "categories"("id");
 ALTER TABLE
-    "Review" ADD CONSTRAINT "review_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "Users"("user_id");
+    "reviews" ADD CONSTRAINT "reviews_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "users"("id");
 ALTER TABLE
-    "Books" ADD CONSTRAINT "books_publisher_id_foreign" FOREIGN KEY("publisher_id") REFERENCES "Publishers"("publisher_id");
+    "books" ADD CONSTRAINT "books_publisher_id_foreign" FOREIGN KEY("publisher_id") REFERENCES "publishers"("id");
 ALTER TABLE
-    "Author_Book" ADD CONSTRAINT "author_book_author_id_foreign" FOREIGN KEY("author_id") REFERENCES "Authors"("author_id");
+    "author_books" ADD CONSTRAINT "author_books_author_id_foreign" FOREIGN KEY("author_id") REFERENCES "authors"("id");
 ALTER TABLE
-    "Order" ADD CONSTRAINT "order_shipping_address_id_foreign" FOREIGN KEY("shipping_address_id") REFERENCES "ShippingAddress"("shipping_address_id");
+    "orders" ADD CONSTRAINT "orders_shipping_address_id_foreign" FOREIGN KEY("shipping_address_id") REFERENCES "shipping_address"("id");
 ALTER TABLE
-    "User_Role" ADD CONSTRAINT "user_role_role_id_foreign" FOREIGN KEY("role_id") REFERENCES "Roles"("role_id");
+    "user_roles" ADD CONSTRAINT "user_roles_role_id_foreign" FOREIGN KEY("role_id") REFERENCES "roles"("id");
 ALTER TABLE
-    "Order" ADD CONSTRAINT "order_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "Users"("user_id");
+    "orders" ADD CONSTRAINT "orders_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "users"("id");
 ALTER TABLE
-    "Author_Book" ADD CONSTRAINT "author_book_book_id_foreign" FOREIGN KEY("book_id") REFERENCES "Books"("book_id");
+    "author_books" ADD CONSTRAINT "author_books_book_id_foreign" FOREIGN KEY("book_id") REFERENCES "books"("id");
 ALTER TABLE
-    "OrderItem" ADD CONSTRAINT "orderitem_book_id_foreign" FOREIGN KEY("book_id") REFERENCES "Books"("book_id");
+    "order_items" ADD CONSTRAINT "order_items_book_id_foreign" FOREIGN KEY("book_id") REFERENCES "books"("id");
 ALTER TABLE
-    "Users" ADD CONSTRAINT "users_user_id_foreign" FOREIGN KEY("user_id") REFERENCES "User_Role"("user_id");
+    "users" ADD CONSTRAINT "users_id_foreign" FOREIGN KEY("id") REFERENCES "user_roles"("user_id");
 ALTER TABLE
-    "Review" ADD CONSTRAINT "review_book_id_foreign" FOREIGN KEY("book_id") REFERENCES "Books"("book_id");
+    "reviews" ADD CONSTRAINT "reviews_book_id_foreign" FOREIGN KEY("book_id") REFERENCES "books"("id");
 ALTER TABLE
-    "OrderItem" ADD CONSTRAINT "orderitem_order_id_foreign" FOREIGN KEY("order_id") REFERENCES "Order"("order_id");
+    "order_items" ADD CONSTRAINT "order_items_order_id_foreign" FOREIGN KEY("order_id") REFERENCES "orders"("id");

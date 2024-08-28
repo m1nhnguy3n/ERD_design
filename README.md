@@ -146,7 +146,8 @@ join books on books.publisher_id = publishers."id"
 GROUP BY publishers.publisher_name
 order by book_counts desc
 ```
-## 8. List users who have placed at least 2 orders with a total spending of $1,000 or more. Display their email, total amount spent, and the number of orders.
+## 8. List users who have placed at least 2 orders with a total spending of $1,000 or more. Display their email, total amount spent, and the number of orders. (My data don't have total_amount field equal or more $1,000. I changed from $1,000 to $900)
+
 ```sql
 WITH order_by_user AS (
   SELECT
@@ -170,7 +171,7 @@ FROM
   JOIN order_by_user ON order_by_user.user_id = users."id"
 ```
 
-##9. List all user reviews, along with the book titles, ratings, and comments. Only show books with an average rating above 4, and sort the results by the average rating in descending order.
+## 9. List all user reviews, along with the book titles, ratings, and comments. Only show books with an average rating above 4, and sort the results by the average rating in descending order.
 ```sql
 WITH book_reviews AS ( SELECT book_id, rating, COMMENT FROM reviews GROUP BY reviews.book_id, rating, COMMENT ORDER BY AVG ( rating ) DESC ) SELECT
 title,

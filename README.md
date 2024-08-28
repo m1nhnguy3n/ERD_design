@@ -4,7 +4,7 @@
 
 # Database Exercise
   
-## 1. List all boarding houses along with their owners (lessors) and their verification status. Sort the boarding houses by price in descending order.
+## 1. List all books along with their authors and publishers, and sort the list by book price in descending order.
 
 ```SQL
 select
